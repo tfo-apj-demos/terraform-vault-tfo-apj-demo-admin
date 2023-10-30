@@ -1,7 +1,7 @@
 resource "vault_policy" "generate_tfc_token" {
     name = "generate_tfc_token"
     policy =<<EOH
-path = "${vault_terraform_cloud_secret_role.boundary_admins.path}" {
+path = "terraform/creds/boundary_admins" {
     capabilities = [
         "create",
         "read",
