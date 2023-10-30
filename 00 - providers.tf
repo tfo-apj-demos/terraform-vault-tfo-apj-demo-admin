@@ -15,3 +15,5 @@ provider "vault" {
   namespace = "admin/tfo-apj-demos"
   # Configuration options
 }
+
+provider "github" {}
