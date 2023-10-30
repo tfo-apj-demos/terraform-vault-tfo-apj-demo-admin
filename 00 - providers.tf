@@ -8,6 +8,10 @@ terraform {
       source = "integrations/github"
       version = "~> 5"
     }
+    tfe = {
+      source = "hashicorp/tfe"
+      version = "~> 0"
+    }
   }
 }
 
@@ -17,3 +21,6 @@ provider "vault" {
 }
 
 provider "github" {}
+provider "tfe" {
+  organization = "tfo-apj-demos"
+}
