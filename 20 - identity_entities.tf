@@ -1,5 +1,5 @@
 locals {
-  github_usernames = setsubtract(flatten([ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "team-se"]), ["grantorchard"])
+  github_usernames = flatten([ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "team-se"])
 }
 
 # Lookup our GitHub org for teams and memberships
