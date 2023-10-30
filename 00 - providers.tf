@@ -4,9 +4,14 @@ terraform {
       source = "hashicorp/vault"
       version = "~> 3"
     }
+    github = {
+      source = "integrations/github"
+      version = "~> 5"
+    }
   }
 }
 
-# provider "vault" {
-#   # Configuration options
-# }
+provider "vault" {
+  namespace = "tfo-apj-demos"
+  # Configuration options
+}
