@@ -1,5 +1,4 @@
 resource "vault_terraform_cloud_secret_backend" "this" {
-  backend     = "tfc"
   token       = var.tfc_token
 }
 
