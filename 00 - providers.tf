@@ -12,6 +12,6 @@ terraform {
 }
 
 provider "vault" {
-  namespace = "tfo-apj-demos"
+  namespace = "admin/tfo-apj-demos"
   # Configuration options
 }
