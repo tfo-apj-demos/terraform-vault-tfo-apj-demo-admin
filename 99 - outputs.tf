@@ -8,4 +8,5 @@ output "oidc_client_id" {
 
 output "oidc_client_secret" {
   value = vault_identity_oidc_client.boundary.client_secret
+  sensitive = true
 }
