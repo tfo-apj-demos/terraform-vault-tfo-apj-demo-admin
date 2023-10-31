@@ -12,7 +12,15 @@ terraform {
       source = "hashicorp/tfe"
       version = "~> 0"
     }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = "~> 1"
+    }
   }
+}
+
+provider "boundary" {
+  addr                   = var.boundary_addr
 }
 
 provider "vault" {
