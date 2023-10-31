@@ -3,7 +3,22 @@ resource "boundary_scope" "tfo_apj_demo" {
   scope_id = "global"
 }
 
+resource "boundary_role" "this" {
+  name          = "scope_admin"
+  principal_ids = [
+    "g_3gji0ATTqd" # boundary_admins group. Data source would be helpful here.
+  ]
+  grant_strings = [
+    "id=*;type=*;actions=*"
+  ]
+  scope_id      = "global"
+  grant_scope_id = boundary_scope.tfo_apj_demo.id
+}
+
 resource "boundary_auth_method_oidc" "team_se" {
+  depends_on = [
+    boundary_role.this
+  ]
   scope_id = boundary_scope.tfo_apj_demo.id
   issuer = vault_identity_oidc_provider.team_se.issuer
   client_id = vault_identity_oidc_client.boundary.client_id
