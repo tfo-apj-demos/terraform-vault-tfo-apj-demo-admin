@@ -6,3 +6,7 @@ variable "tfc_org_name" {
 variable "tfc_token" {
   type = string
 }
+
+variable "boundary_addr" {
+  type = string
+}
