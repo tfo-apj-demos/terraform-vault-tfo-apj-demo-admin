@@ -37,3 +37,12 @@ resource "vault_identity_group" "team_se_internal" {
     vault_identity_group.team_se.id
   ]
 }
+
+resource "vault_identity_group" "team_se_internal_entities" {
+  name     = "team-se-internal-entites"
+  type     = "internal"
+  policies = []
+  member_entity_ids = [ 
+    for v in vault_identity_entity.se: v.id
+  ]
+}
