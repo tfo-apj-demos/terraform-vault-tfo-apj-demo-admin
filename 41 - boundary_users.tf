@@ -1,7 +1,7 @@
 resource "boundary_account_oidc" "this" {
   for_each = vault_identity_entity.se
   description = "Populated from Github Account"
-  auth_method_id = boundary_auth_method_oidc.this.id
+  auth_method_id = boundary_auth_method_oidc.team_se.id
   name = each.value.name 
   subject = each.value.id
 }
