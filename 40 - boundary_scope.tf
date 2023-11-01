@@ -15,6 +15,20 @@ resource "boundary_role" "this" {
   grant_scope_id = boundary_scope.tfo_apj_demo.id
 }
 
+resource "boundary_role" "u_anon" {
+  name = "u_anon"
+  principal_ids = [
+    "u_anon"
+  ]
+  grant_strings = [
+    "id=*;type=auth-method;actions=list,authenticate",
+    "id=*;type=scope;actions=list,no-op",
+    "id={{account.id}};actions=read,change-password"
+  ]
+  scope_id      = "global"
+  grant_scope_id = boundary_scope.tfo_apj_demo.id
+}
+
 resource "boundary_auth_method_oidc" "team_se" {
   depends_on = [
     boundary_role.this
