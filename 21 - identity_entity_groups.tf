@@ -28,3 +28,12 @@ resource "vault_identity_group_alias" "apac_se" {
   mount_accessor = vault_github_auth_backend.this.accessor
   canonical_id   = vault_identity_group.team_se.id
 }
+
+resource "vault_identity_group" "team_se_internal" {
+  name     = "team-se-internal"
+  type     = "internal"
+  policies = []
+  member_group_ids = [
+    vault_identity_group.team_se.id
+  ]
+}
