@@ -4,6 +4,7 @@ resource "boundary_account_oidc" "this" {
   auth_method_id = boundary_auth_method_oidc.team_se.id
   name = each.value.name 
   subject = each.value.id
+  issuer = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/admin/tfo-apj-demos/identity/oidc/provider/team_se"
 }
 
 
