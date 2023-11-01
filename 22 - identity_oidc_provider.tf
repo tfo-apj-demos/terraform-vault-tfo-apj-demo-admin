@@ -23,8 +23,7 @@ resource "vault_identity_oidc_key" "team_se" {
 resource "vault_identity_oidc_client" "boundary" {
   name          = "boundary"
   redirect_uris = [
-    "${boundary_auth_method_oidc.team_se.callback_url}",
-    #"https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/v1/auth-methods/oidc:authenticate:callback",
+    "https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/v1/auth-methods/oidc:authenticate:callback",
     "http://127.0.0.1:8251/callback"
   ]
   assignments = [
