@@ -31,6 +31,7 @@ resource "boundary_auth_method_oidc" "team_se" {
   ]
   name = "vault"
   state = "active-public"
+  is_primary_for_scope = true
 }
 
 resource "boundary_managed_group" "team_se" {
