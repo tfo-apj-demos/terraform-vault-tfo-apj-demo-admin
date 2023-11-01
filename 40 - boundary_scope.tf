@@ -6,7 +6,7 @@ resource "boundary_scope" "tfo_apj_demo" {
 resource "boundary_role" "this" {
   name          = "scope_admin"
   principal_ids = [
-    "g_3gji0ATTqd" # boundary_admins group. Data source would be helpful here.
+    "g_m1JZt2HHra" # boundary_admins group. Data source would be helpful here.
   ]
   grant_strings = [
     "id=*;type=*;actions=*"
