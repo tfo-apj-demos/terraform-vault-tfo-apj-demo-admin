@@ -18,6 +18,10 @@ resource "vault_identity_oidc_key" "team_se" {
   algorithm = "RS256"
   verification_ttl = 7200
   rotation_period = 7200
+  allowed_client_ids = [
+    vault_identity_oidc_role.team_se.client_id
+  ]
+
 }
 
 resource "vault_identity_oidc_client" "boundary" {
@@ -55,13 +59,13 @@ resource "vault_identity_oidc_role" "team_se" {
   name = "team_se"
   key  = vault_identity_oidc_key.team_se.name
   ttl = 60
+
 }
 
 resource "vault_identity_oidc_key_allowed_client_id" "team_se" {
-  key_name          = vault_identity_oidc_key.team_se.name
+  key_name          = "team_se"
   allowed_client_id = vault_identity_oidc_role.team_se.client_id
 }
 
-
-# https://e0078f32-6a05-44fe-a147-158f9d15a5fb.boundary.hashicorp.cloud/v1/auth-methods/oidc:authenticate:callback
-# https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/v1/auth-methods/oidc:authenticate:callback
+#https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/authentication-error?error=%7B%22kind%22%3A%22Internal%22%2C+%22message%22%3A%22authmethod_service.%28Service%29.authenticateOidcCallback%3A+Callback+validation+failed.%3A+parameter+violation%3A+error+%23100%3A+oidc.Callback%3A+unable+to+complete+exchange+with+oidc+provider%3A+unknown%3A+error+%230%3A+Provider.Exchange%3A+unable+to+exchange+auth+code+with+provider%3A+oauth2%3A+%5C%22invalid_client%5C%22+%5C%22
+#client+is+not+authorized+to+use+the+key%5C%22%22%7D
