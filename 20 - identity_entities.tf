@@ -9,7 +9,7 @@ locals {
 data "github_organization_teams" "team_se" {
   root_teams_only = true
   summary_only = false
-  results_per_page = 10
+  results_per_page = 20
 }
 
 data "github_user" "team_se" {
