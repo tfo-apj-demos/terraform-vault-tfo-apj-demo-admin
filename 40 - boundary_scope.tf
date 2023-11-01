@@ -38,7 +38,7 @@ resource "boundary_auth_method_oidc" "team_se" {
   client_id = vault_identity_oidc_client.boundary.client_id
   client_secret = vault_identity_oidc_client.boundary.client_secret
   signing_algorithms = ["RS256"]
-  api_url_prefix = "https://e0078f32-6a05-44fe-a147-158f9d15a5fb.boundary.hashicorp.cloud"
+  api_url_prefix = "https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud"
   claims_scopes = [
     "groups",
     "user"
