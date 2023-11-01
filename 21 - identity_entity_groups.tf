@@ -4,7 +4,7 @@ resource "vault_identity_group" "team_se" {
   type     = "external"
   policies = [
     "default",
-    "oidc"
+    vault_policy.auth_to_oidc.name
   ]
 }
 
@@ -19,7 +19,7 @@ resource "vault_identity_group" "apac_se" {
   type     = "external"
   policies = [
     "default",
-    "oidc"
+    vault_policy.auth_to_oidc.name
   ]
 }
 
