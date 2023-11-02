@@ -40,5 +40,8 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
   username = "{{.User.Id}}"
   key_type            = "ed25519"
   credential_store_id = boundary_credential_store_vault.this.id
+  extensions = {
+    permit-pty = ""
+  }
 }
 
