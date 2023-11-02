@@ -6,7 +6,7 @@ resource "boundary_role" "team_se" {
   grant_strings = [
     "id=*;type=*;actions=*"
   ]
-  scope_id      = "global"
+  scope_id      = boundary_scope.tfo_apj_demo.id
   grant_scope_id = boundary_scope.tfo_apj_demo.id
 }
 
