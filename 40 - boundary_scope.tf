@@ -32,4 +32,5 @@ module "projects" {
 
   scope_name = each.value
   parent_scope_id = boundary_scope.tfo_apj_demo.id
+  vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
 }
