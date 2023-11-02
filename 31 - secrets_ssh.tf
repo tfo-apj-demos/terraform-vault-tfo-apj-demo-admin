@@ -13,7 +13,7 @@ resource "vault_ssh_secret_backend_role" "this" {
 	name = "boundary"
 	allow_user_certificates = true
   default_user = "ubuntu"
-  allowed_users = "ubuntu,go,boundary"
+  allowed_users = "*"
   key_type = "ca"
   ttl = "28800"
   max_ttl = "28800"
@@ -21,3 +21,4 @@ resource "vault_ssh_secret_backend_role" "this" {
   allowed_extensions = "permit-pty,permit-port-forwarding"
 
 }
+

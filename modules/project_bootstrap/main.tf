@@ -10,7 +10,6 @@ resource "boundary_role" "this" {
     "id=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.project.id
-  grant_scope_id = boundary_scope.project.scope_id
 }
 
 resource "vault_token" "this" {
@@ -24,6 +23,7 @@ resource "vault_token" "this" {
 }
 
 resource "boundary_credential_store_vault" "this" {
+  depends_on = [ boundary_role.this ]
   name        = "HCP Vault"
   address     = var.vault_address
   token       = vault_token.this.client_token
@@ -32,9 +32,10 @@ resource "boundary_credential_store_vault" "this" {
 }
 
 resource "boundary_credential_library_vault_ssh_certificate" "this" {
+  depends_on = [ boundary_role.this ]
   name = "SSH Key Signing"
   path = "ssh/sign/boundary"
-  username = "ubuntu"
+  username = "{{.User.Id}}"
   key_type            = "ed25519"
   credential_store_id = boundary_credential_store_vault.this.id
 }
