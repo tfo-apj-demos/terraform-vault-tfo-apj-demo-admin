@@ -44,7 +44,7 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
   ]
   name = "SSH Key Signing"
   path = "ssh/sign/boundary"
-  username = "{{.User.Name}}"
+  username = "ubuntu" #"{{.User.Name}}"
   key_type            = "ed25519"
   credential_store_id = boundary_credential_store_vault.this.id
   extensions = {
