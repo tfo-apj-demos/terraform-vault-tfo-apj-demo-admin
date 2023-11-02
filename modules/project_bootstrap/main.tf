@@ -16,7 +16,7 @@ resource "vault_token" "this" {
 resource "boundary_credential_store_vault" "this" {
   name        = "HCP Vault"
   address     = var.vault_address
-  token       = var.vault_token
+  token       = vault_token.this.client_token
   namespace   = "admin/tfo-apj-demos"
   scope_id    = boundary_scope.project.id
 }
