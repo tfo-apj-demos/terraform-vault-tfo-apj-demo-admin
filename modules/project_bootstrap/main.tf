@@ -22,6 +22,9 @@ resource "vault_token" "this" {
     "sign_ssh_certificate",
     "revoke_lease"
   ]
+  lifecycle {
+    ignore_changes = [ all ]
+  }
 }
 
 resource "boundary_credential_store_vault" "this" {
