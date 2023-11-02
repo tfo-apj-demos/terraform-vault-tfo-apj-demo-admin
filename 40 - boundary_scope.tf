@@ -27,7 +27,7 @@ resource "boundary_auth_method_oidc" "team_se" {
 # Create a project for each SE
 
 module "projects" {
-  source = "modules/project_bootstrap"
+  source = "./modules/project_bootstrap"
   for_each = toset(local.github_usernames)
 
   scope_name = each.value
