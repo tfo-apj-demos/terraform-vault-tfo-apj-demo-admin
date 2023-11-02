@@ -28,9 +28,13 @@ resource "boundary_auth_method_oidc" "team_se" {
 
 module "projects" {
   source = "./modules/project_bootstrap"
-  for_each = toset(local.github_usernames)
+  for_each = boundary_user.this
 
-  scope_name = each.value
+  scope_name = each.value.name
   parent_scope_id = boundary_scope.tfo_apj_demo.id
   vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
+  project_admin_principal_ids = [
+    each.value.id,
+    "g_m1JZt2HHra" # boundary_admins group. Data source would be helpful here.
+  ]
 }

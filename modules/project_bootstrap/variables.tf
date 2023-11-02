@@ -9,3 +9,7 @@ variable "parent_scope_id" {
 variable "vault_address" {
   type = string
 }
+
+variable "project_admin_principal_ids" {
+  type = list(string)
+}

@@ -3,6 +3,16 @@ resource "boundary_scope" "project" {
   scope_id = var.parent_scope_id
 }
 
+resource "boundary_role" "this" {
+  name          = "${var.scope_name}_project_admin"
+  principal_ids = var.project_admin_principal_ids
+  grant_strings = [
+    "id=*;type=*;actions=*"
+  ]
+  scope_id      = boundary_scope.project.id
+  grant_scope_id = boundary_scope.project.scope_id
+}
+
 resource "vault_token" "this" {
   period = 7200
   renewable = true
