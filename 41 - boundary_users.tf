@@ -16,7 +16,7 @@ resource "boundary_account_oidc" "this" {
 
 resource "boundary_user" "this" {
   for_each = boundary_account_oidc.this
-  name        = each.value.name
+  name        = lower(each.value.name)
   description = "Populated from Github Account"
   account_ids = [
     each.value.id
