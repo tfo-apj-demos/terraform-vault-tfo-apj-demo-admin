@@ -25,7 +25,9 @@ resource "vault_token" "this" {
 }
 
 resource "boundary_credential_store_vault" "this" {
-  depends_on = [ boundary_role.this ]
+  depends_on  = [ 
+    boundary_role.this 
+  ]
   name        = "HCP Vault"
   address     = var.vault_address
   token       = vault_token.this.client_token
@@ -34,10 +36,12 @@ resource "boundary_credential_store_vault" "this" {
 }
 
 resource "boundary_credential_library_vault_ssh_certificate" "this" {
-  depends_on = [ boundary_role.this ]
+  depends_on = [ 
+    boundary_role.this 
+  ]
   name = "SSH Key Signing"
   path = "ssh/sign/boundary"
-  username = "{{.User.Id}}"
+  username = "{{.User.Name}}"
   key_type            = "ed25519"
   credential_store_id = boundary_credential_store_vault.this.id
   extensions = {
