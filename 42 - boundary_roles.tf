@@ -35,5 +35,3 @@ resource "boundary_role" "u_anon" {
   scope_id      = "global"
   grant_scope_id = boundary_scope.tfo_apj_demo.id
 }
-
-https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/scopes/o_Kme3VEWJyV/scopes
