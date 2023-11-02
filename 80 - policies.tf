@@ -28,3 +28,12 @@ path "ssh/sign/boundary" {
 }
 EOH
 }
+
+resource "vault_policy" "revoke_lease" {
+    name = "revoke_lease"
+    policy =<<EOH
+path "sys/leases/revoke" {
+    capabilities = ["update"]
+}
+EOH
+}

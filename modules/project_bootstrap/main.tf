@@ -19,7 +19,8 @@ resource "vault_token" "this" {
   no_parent = true
   policies = [
     "default",
-    "sign_ssh_certificate"
+    "sign_ssh_certificate",
+    "revoke_lease"
   ]
 }
 
