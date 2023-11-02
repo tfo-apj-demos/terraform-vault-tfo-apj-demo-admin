@@ -9,7 +9,8 @@ resource "boundary_role" "this" {
   grant_strings = [
     "id=*;type=*;actions=*"
   ]
-  scope_id      = boundary_scope.project.id
+  scope_id      = boundary_scope.project.scope_id
+  grant_scope_id = boundary_scope.project.id
 }
 
 resource "vault_token" "this" {
