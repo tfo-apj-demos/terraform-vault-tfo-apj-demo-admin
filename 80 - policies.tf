@@ -19,3 +19,12 @@ path "identity/oidc/provider/team_se/authorize" {
 }
 EOH
 }
+
+resource "vault_policy" "ssh_sign" {
+    name = "sign_ssh_certificate"
+    policy =<<EOH
+path "ssh/sign/boundary" {
+  capabilities = ["read", "update"]
+}
+EOH
+}
