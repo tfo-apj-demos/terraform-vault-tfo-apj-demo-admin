@@ -1,5 +1,7 @@
+# Create org scope and auth method
+
 resource "boundary_scope" "tfo_apj_demo" {
-  name     = "tfo_apj_demo"
+  name     = "tfo_apj_demos"
   scope_id = "global"
 }
 
@@ -20,4 +22,14 @@ resource "boundary_auth_method_oidc" "team_se" {
   name = "vault"
   state = "active-public"
   is_primary_for_scope = true
+}
+
+# Create a project for each SE
+
+module "projects" {
+  source = "modules/project_bootstrap"
+  for_each = toset(local.github_usernames)
+
+  scope_name = each.value
+  parent_scope_id = boundary_scope.tfo_apj_demo.id
 }
