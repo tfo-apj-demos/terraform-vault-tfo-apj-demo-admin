@@ -23,7 +23,7 @@ resource "vault_token" "this" {
     "revoke_lease"
   ]
   lifecycle {
-    ignore_changes = [ all ]
+    ignore_changes = all 
   }
 }
 
