@@ -1,7 +1,7 @@
 resource "boundary_managed_group" "team_se" {
   name           = "team_se"
   auth_method_id = boundary_auth_method_oidc.team_se.id
-  filter         = "name == \"team-se\""
+  filter         = "\"team-se\" in groups"
 }
 
 resource "boundary_account_oidc" "this" {
