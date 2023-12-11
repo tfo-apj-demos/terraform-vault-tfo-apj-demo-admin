@@ -22,8 +22,12 @@ resource "vault_identity_oidc_key" "team_se" {
 resource "vault_identity_oidc_client" "boundary" {
   name          = "boundary"
   redirect_uris = [
+    # --- HCP Boundary
     "https://8b596635-91df-45a3-8455-1ecbf5e8c43e.boundary.hashicorp.cloud/v1/auth-methods/oidc:authenticate:callback",
-    "http://127.0.0.1:8251/callback"
+    "http://127.0.0.1:8251/callback",
+    # --- Vault in GCVE
+    "http://localhost:8250/oidc/callback",
+    "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
   ]
   assignments = [
     vault_identity_oidc_assignment.team_se.name
@@ -37,6 +41,11 @@ resource "vault_identity_oidc_scope" "team_se" {
   name        = "groups"
   template    = "{\"groups\":{{identity.entity.groups.names}}}"
 }
+
+# \"username\": {{identity.entity.aliases.$MOUNT_ACCESSOR.name}},
+# \"contact\": {
+#     \"email\": {{identity.entity.metadata.email}},       
+# },
 
 resource "vault_identity_oidc_provider" "team_se" {
   name = "team_se"
