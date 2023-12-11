@@ -42,10 +42,10 @@ resource "vault_identity_oidc_scope" "team_se" {
   template    = "{\"groups\":{{identity.entity.groups.names}}}"
 }
 
-# \"username\": {{identity.entity.aliases.$MOUNT_ACCESSOR.name}},
-# \"contact\": {
-#     \"email\": {{identity.entity.metadata.email}},       
-# },
+resource "vault_identity_oidc_scope" "username" {
+  name = "username"
+  template = "{\"username\":{{identity.entity.name}}}"
+}
 
 resource "vault_identity_oidc_provider" "team_se" {
   name = "team_se"
