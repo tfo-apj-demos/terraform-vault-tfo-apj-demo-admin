@@ -39,19 +39,21 @@ resource "vault_identity_oidc_client" "boundary" {
 
 resource "vault_identity_oidc_scope" "team_se" {
   name        = "groups"
-  template    = jsonencode({
-    "userinfo": {
-      "groups" : "{{identity.entity.groups.names}}", 
-      "username": "{{identity.entity.name}}"
-    }
-  })
+  template    = "{\"groups\" :{{identity.entity.groups.names}} }"
 }
+
+# resource "vault_identity_oidc_scope" "username" {
+#   name = "username"
+#   template = "{\"username\":{{identity.entity.name}}}"
+# }
 
 resource "vault_identity_oidc_provider" "team_se" {
   name = "team_se"
   https_enabled = true
   issuer_host = "production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
   scopes_supported = [
+    "openid",
+		"profile",
     vault_identity_oidc_scope.team_se.name
   ]
   allowed_client_ids = [
