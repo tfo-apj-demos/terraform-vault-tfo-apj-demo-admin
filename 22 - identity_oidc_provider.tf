@@ -39,13 +39,13 @@ resource "vault_identity_oidc_client" "boundary" {
 
 resource "vault_identity_oidc_scope" "team_se" {
   name        = "groups"
-  template    = "{\"groups\":{{identity.entity.groups.names}}}"
+  template    = "{\"userinfo\": {\"groups\" :{{identity.entity.groups.names}}, \"username\":{{identity.entity.name}}}"
 }
 
-resource "vault_identity_oidc_scope" "username" {
-  name = "username"
-  template = "{\"username\":{{identity.entity.name}}}"
-}
+# resource "vault_identity_oidc_scope" "username" {
+#   name = "username"
+#   template = "{\"username\":{{identity.entity.name}}}"
+# }
 
 resource "vault_identity_oidc_provider" "team_se" {
   name = "team_se"
