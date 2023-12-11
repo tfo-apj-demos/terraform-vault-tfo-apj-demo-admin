@@ -52,8 +52,7 @@ resource "vault_identity_oidc_provider" "team_se" {
   https_enabled = true
   issuer_host = "production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
   scopes_supported = [
-    vault_identity_oidc_scope.team_se.name,
-    vault_identity_oidc_scope.username.name
+    vault_identity_oidc_scope.team_se.name
   ]
   allowed_client_ids = [
     vault_identity_oidc_client.boundary.client_id
