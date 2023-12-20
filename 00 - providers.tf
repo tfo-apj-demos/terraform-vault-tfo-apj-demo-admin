@@ -17,6 +17,12 @@ terraform {
       version = "~> 1"
     }
   }
+  cloud {
+    organization = "tfo-apj-demos"
+    workspaces {
+      name = "hcp-vault-config"
+    }
+  }
 }
 
 provider "boundary" {
@@ -25,7 +31,6 @@ provider "boundary" {
 
 provider "vault" {
   namespace = "admin/tfo-apj-demos"
-  # Configuration options
 }
 
 provider "github" {}

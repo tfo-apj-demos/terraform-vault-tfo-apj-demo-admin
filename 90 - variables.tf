@@ -10,3 +10,7 @@ variable "tfc_token" {
 variable "boundary_addr" {
   type = string
 }
+
+variable "gcve_admin_github_alisases" {
+  type = list(string)
+}
