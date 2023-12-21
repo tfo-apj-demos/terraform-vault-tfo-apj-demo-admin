@@ -8,9 +8,10 @@ resource "vault_mount" "pki" {
 	path = "pki"
 }
 
-import {
-  id = "pki/config/ca"
-}
+# import {
+#   id = "pki/config/ca"
+#   to = 
+# }
 
 resource "vault_pki_secret_backend_config_ca" "this" {
 	backend = vault_mount.pki.path
