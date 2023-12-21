@@ -12,10 +12,10 @@ data "github_organization_teams" "team_se" {
   results_per_page = 20
 }
 
-data "github_user" "team_se" {
-  for_each = toset(local.github_usernames)
-  username = each.value
-}
+# data "github_user" "team_se" {
+#   for_each = toset(local.github_usernames)
+#   username = each.value
+# }
 
 # Create entities and aliases in Vault since the OIDC provider needs an entity
 resource "vault_identity_entity_alias" "se" {
