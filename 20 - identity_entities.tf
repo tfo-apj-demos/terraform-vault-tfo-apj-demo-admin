@@ -1,8 +1,10 @@
 locals {
-  github_usernames = flatten(concat(
-    [ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "team-se" ],
-    [ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "apac-se" ]
-  ))
+  github_usernames = data.tfe_outputs.github_usernames.values
+}
+
+data "tfe_outputs" "github_usernames" {
+  organization = var.tfc_organization
+  workspace = var.tfc_workspace
 }
 
 # Lookup our GitHub org for teams and memberships
@@ -11,11 +13,6 @@ data "github_organization_teams" "team_se" {
   summary_only = false
   results_per_page = 20
 }
-
-# data "github_user" "team_se" {
-#   for_each = toset(local.github_usernames)
-#   username = each.value
-# }
 
 # Create entities and aliases in Vault since the OIDC provider needs an entity
 resource "vault_identity_entity_alias" "se" {
@@ -26,6 +23,6 @@ resource "vault_identity_entity_alias" "se" {
 }
 
 resource "vault_identity_entity" "se" {
-  for_each = toset(local.github_usernames)
+  for_each = toset(data.tfe_outputs.github_usernames)
   name = each.value
 }

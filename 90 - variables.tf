@@ -1,6 +1,11 @@
-variable "tfc_org_name" {
+variable "tfc_organization" {
   type = string
   default = "tfo-apj-demos"
+}
+
+variable "tfc_workspace" {
+  type = string
+  default = "github-identities"
 }
 
 variable "tfc_token" {
