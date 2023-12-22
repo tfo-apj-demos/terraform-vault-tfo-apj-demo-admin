@@ -2,10 +2,6 @@ locals {
   github_usernames = data.tfe_outputs.github_usernames.values
 }
 
-output "github_usernames" {
-  value = local.github_usernames
-  sensitive = true
-}
 
 data "tfe_outputs" "github_usernames" {
   organization = var.tfc_organization
