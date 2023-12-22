@@ -3,7 +3,7 @@ locals {
 }
 
 
-data "tfe_outputs" "github_usernames" {
+data "tfe_outputs" "github_identities" {
   organization = var.tfc_organization
   workspace = var.tfc_workspace
 }
