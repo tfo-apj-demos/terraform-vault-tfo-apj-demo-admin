@@ -1,5 +1,5 @@
 locals {
-  github_usernames = data.tfe_outputs.github_usernames.values
+  github_usernames = toset(data.tfe_outputs.github_identities.values.github_usernames)
 }
 
 
