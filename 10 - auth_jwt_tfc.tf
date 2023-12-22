@@ -2,7 +2,7 @@ resource "vault_jwt_auth_backend_role" "boundary_admins" {
   backend         = "jwt_tfc"
   role_name       = "boundary_admins"
   token_policies  = [
-    vault_policy.generate_tfc_token.name,
+    #vault_policy.generate_tfc_token.name,
     "default"
   ]
 

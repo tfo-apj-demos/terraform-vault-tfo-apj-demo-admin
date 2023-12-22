@@ -4,7 +4,7 @@ resource "vault_identity_group" "team_se" {
   type     = "internal"
   policies = [
     "default",
-    vault_policy.auth_to_oidc.name
+    "auth_to_oidc"
   ]
   member_entity_ids = [ 
     for v in vault_identity_entity.se: v.id
