@@ -28,6 +28,6 @@ resource "vault_identity_entity_alias" "se" {
 }
 
 resource "vault_identity_entity" "se" {
-  for_each = local.github_usernames
+  for_each = toset(nonsensitive(local.github_usernames))
   name = each.value
 }
