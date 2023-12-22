@@ -23,6 +23,6 @@ resource "vault_identity_entity_alias" "se" {
 }
 
 resource "vault_identity_entity" "se" {
-  for_each = toset(data.tfe_outputs.github_usernames)
+  for_each = toset(local.github_usernames)
   name = each.value
 }
