@@ -2,8 +2,8 @@ locals {
   github_usernames = data.tfe_outputs.github_usernames.values
 }
 
-output {
-  github_usernames = local.github_usernames
+output "github_usernames" {
+  value = local.github_usernames
 }
 
 data "tfe_outputs" "github_usernames" {
