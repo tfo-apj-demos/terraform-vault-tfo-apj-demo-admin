@@ -37,3 +37,11 @@ path "sys/leases/revoke" {
 }
 EOH
 }
+
+resource "vault_policy" "manage_pki" {
+    name = "manage_pki"
+    policy =<<EOH
+path "pki/intermediate/set-signed" {
+    capabilities = ["update"]
+}
+}
