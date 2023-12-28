@@ -2,18 +2,10 @@ locals {
   github_usernames = toset(data.tfe_outputs.github_identities.values.github_usernames)
 }
 
-
 data "tfe_outputs" "github_identities" {
   organization = var.tfc_organization
   workspace = var.tfc_workspace
 }
-
-# Lookup our GitHub org for teams and memberships
-# data "github_organization_teams" "team_se" {
-#   root_teams_only = true
-#   summary_only = false
-#   results_per_page = 20
-# }
 
 # Create entities and aliases in Vault since the OIDC provider needs an entity
 resource "vault_identity_entity_alias" "se" {
