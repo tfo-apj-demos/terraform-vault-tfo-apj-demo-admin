@@ -11,5 +11,5 @@ path "transit/keys/vault_unseal" {
 }
 
 path "transit" {
-   capabilities = ["read"]
+   capabilities = ["read","update"]
 }
