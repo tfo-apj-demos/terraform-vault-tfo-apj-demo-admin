@@ -1,5 +1,5 @@
 import {
-  resource = "transit"
+  id = "transit"
   to = vault_mount.transit
 }
 
@@ -11,7 +11,7 @@ resource "vault_mount" "transit" {
 }
 
 import {
-  resource = "transit/vault_unseal"
+  id = "transit/vault_unseal"
   to = vault_transit_secret_backend_key.vault_unseal
 }
 
