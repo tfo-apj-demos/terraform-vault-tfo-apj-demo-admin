@@ -24,7 +24,7 @@ resource "vault_jwt_auth_backend_role" "boundary_admins" {
 }
 
 resource "vault_jwt_auth_backend_role" "tfc" {
-  backend         = vault_jwt_auth_backend.boundary_admins.path
+  backend         = "jwt_tfc"
   role_name       = "tfc"
   token_policies  = [
     "terraform_cloud",
