@@ -52,6 +52,13 @@ path "sys/mounts" {
   capabilities = ["read", "list"]
 }
 
+# --- Interact with transit
+path "transit" {
+  capabilities = [ 
+    "read",
+    "list" 
+  ]
+}
 
 # --- Manage PKI engine
 path "+/intermediate/set-signed" {
