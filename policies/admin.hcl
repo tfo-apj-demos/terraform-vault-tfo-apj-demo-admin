@@ -55,8 +55,19 @@ path "sys/mounts" {
 # --- Interact with transit
 path "transit" {
   capabilities = [ 
-    "read",
-    "list" 
+    "read"
+  ]
+}
+
+path "transit/keys" {
+  capabilities = [
+    "list"
+  ]
+}
+
+path "transit/keys/+" {
+  capabilities = [
+    "read"
   ]
 }
 
@@ -73,11 +84,11 @@ path "+/creds/+" {
 
 
 # --- Manage entities and aliases
-path "identity/*" {
+path "identity/+" {
   capabilities = [ "create", "read", "update", "delete", "list" ]
 }
 
-path "entities/*" {
+path "entities/+" {
   capabilities = [ "create", "read", "update", "delete", "list" ]
 }
 
@@ -95,7 +106,7 @@ path "sys/health" {
 
 
 # --- Manage audit devices
-path "sys/audit*" {
+path "sys/audit/+" {
 	capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
