@@ -10,12 +10,12 @@ resource "vault_mount" "transit" {
   max_lease_ttl_seconds     = 86400
 }
 
-import {
-  id = "transit/keys/vault_unseal"
-  to = vault_transit_secret_backend_key.vault_unseal
-}
+# import {
+#   id = "transit/keys/vault_unseal"
+#   to = vault_transit_secret_backend_key.vault_unseal
+# }
 
-resource "vault_transit_secret_backend_key" "vault_unseal" {
-  backend = vault_mount.transit.path
-  name    = "vault_unseal"
-}
+# resource "vault_transit_secret_backend_key" "vault_unseal" {
+#   backend = vault_mount.transit.path
+#   name    = "vault_unseal"
+# }

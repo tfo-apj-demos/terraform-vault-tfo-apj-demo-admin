@@ -30,7 +30,7 @@ resource "vault_jwt_auth_backend_role" "tfc" {
     "terraform_cloud",
     "vault_unseal",
     "generate_certificate",
-    "create_child_token"
+    "create_child_token",
     ]
 
   bound_audiences = [
