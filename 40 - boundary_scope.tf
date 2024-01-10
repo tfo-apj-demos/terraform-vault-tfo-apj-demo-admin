@@ -24,8 +24,7 @@ resource "boundary_auth_method_oidc" "team_se" {
   is_primary_for_scope = true
 }
 
-# Create a project for each SE
-
+# --- Create a project for each SE
 module "projects" {
   source = "./modules/project_bootstrap"
   for_each = boundary_user.this
@@ -37,4 +36,18 @@ module "projects" {
     each.value.id,
     "g_m1JZt2HHra" # boundary_admins group. Data source would be helpful here.
   ]
+}
+
+# --- Create a project for shared access
+
+# --- Create a project for admin access
+module "admin_project" {
+  source = "./modules/project_bootstrap"
+
+  scope_name = "gcve_admins"
+  parent_scope_id = boundary_scope.tfo_apj_demo.id
+  project_admin_principal_ids = [
+    "g_m1JZt2HHra"
+  ]
+  vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
 }
