@@ -4,7 +4,7 @@ resource "boundary_role" "team_se" {
     boundary_managed_group.team_se.id
   ]
   grant_strings = [
-    "id=*;type=*;actions=*"
+    "ids=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.tfo_apj_demo.id
   grant_scope_id = boundary_scope.tfo_apj_demo.id
@@ -16,7 +16,7 @@ resource "boundary_role" "this" {
     "g_m1JZt2HHra" # boundary_admins group. Data source would be helpful here.
   ]
   grant_strings = [
-    "id=*;type=*;actions=*"
+    "ids=*;type=*;actions=*"
   ]
   scope_id      = "global"
   grant_scope_id = boundary_scope.tfo_apj_demo.id
@@ -28,9 +28,9 @@ resource "boundary_role" "u_anon" {
     "u_anon"
   ]
   grant_strings = [
-    "id=*;type=auth-method;actions=list,authenticate",
-    "id=*;type=scope;actions=list,no-op",
-    "id={{account.id}};actions=read,change-password"
+    "ids=*;type=auth-method;actions=list,authenticate",
+    "ids=*;type=scope;actions=list,no-op",
+    "ids={{account.id}};actions=read,change-password"
   ]
   scope_id      = "global"
   grant_scope_id = boundary_scope.tfo_apj_demo.id
