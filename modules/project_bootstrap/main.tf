@@ -7,7 +7,7 @@ resource "boundary_role" "this" {
   name          = "${var.scope_name}_project_admin"
   principal_ids = var.project_admin_principal_ids
   grant_strings = [
-    "id=*;type=*;actions=*"
+    "ids=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.project.scope_id
   grant_scope_id = boundary_scope.project.id
