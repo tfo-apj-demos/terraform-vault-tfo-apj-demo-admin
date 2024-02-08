@@ -13,9 +13,3 @@ variable "vault_address" {
 variable "project_admin_principal_ids" {
   type = list(string)
 }
-
-variable "ldap_credential_library" {
-  description = "Determines if the LDAP credential library should be created"
-  type        = bool
-  default     = false
-}

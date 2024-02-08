@@ -51,12 +51,3 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
     permit-pty = ""
   }
 }
-
-resource "boundary_credential_library_vault" "ldap_creds" {
-  count               = var.ldap_credential_library ? 1 : 0
-  name                = "ldap_creds"
-  description         = "Dynamic LDAP credentials"
-  credential_store_id = boundary_credential_store_vault.foo.id
-  path                = "ldap/creds/vault_ldap_dynamic_demo_role"
-  http_method         = "GET"
-}
