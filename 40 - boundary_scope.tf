@@ -34,7 +34,8 @@ module "projects" {
   vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
   project_admin_principal_ids = [
     each.value.id,
-    "g_m1JZt2HHra" # boundary_admins group. Data source would be helpful here.
+    "g_m1JZt2HHra", # boundary_admins group. Data source would be helpful here.
+    "mgoidc_9ujagjtUP1"
   ]
 }
 
@@ -47,7 +48,8 @@ module "admin_project" {
   scope_name = "gcve_admins"
   parent_scope_id = boundary_scope.tfo_apj_demo.id
   project_admin_principal_ids = [
-    "g_m1JZt2HHra"
+    "g_m1JZt2HHra",
+    "mgoidc_9ujagjtUP1"
   ]
   vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
 }
