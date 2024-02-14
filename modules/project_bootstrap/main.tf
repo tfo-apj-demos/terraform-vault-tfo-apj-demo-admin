@@ -63,4 +63,3 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
     permit-pty = ""
   }
 }
-
