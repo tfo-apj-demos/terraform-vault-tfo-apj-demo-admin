@@ -13,3 +13,8 @@ variable "vault_address" {
 variable "project_admin_principal_ids" {
   type = list(string)
 }
+
+variable "connect_only_principal_ids" {
+  type = list(string)
+  default = []
+}

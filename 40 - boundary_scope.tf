@@ -40,6 +40,20 @@ module "projects" {
 }
 
 # --- Create a project for shared access
+module "shared_access" {
+  source = "./modules/project_bootstrap"
+
+  scope_name = "shared_services"
+  parent_scope_id = boundary_scope.tfo_apj_demo.id
+  project_admin_principal_ids = [
+      "mgoidc_9ujagjtUP1"
+  ]
+  connect_only_principal_ids = [
+    "mgoidc_fj1jMa5RWF"
+  ]
+
+  vault_address = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200"
+}
 
 # --- Create a project for admin access
 module "admin_project" {

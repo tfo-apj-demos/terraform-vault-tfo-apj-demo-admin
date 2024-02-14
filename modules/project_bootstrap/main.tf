@@ -13,6 +13,18 @@ resource "boundary_role" "this" {
   grant_scope_id = boundary_scope.project.id
 }
 
+resource "boundary_role" "use_targets" {
+  count = length(var.connect_only_principal_ids) != 0 ? 1 : 0 
+  name          = "${var.scope_name}_connect_only"
+  principal_ids = var.connect_only_principal_ids
+  grant_strings = [
+    "type=target;actions=list",
+    "type=target;ids=*;actions=read,authorize-session"
+  ]
+  scope_id      = boundary_scope.project.scope_id
+  grant_scope_id = boundary_scope.project.id
+}
+
 resource "vault_token" "this" {
   period = 7200
   renewable = true
