@@ -10,7 +10,7 @@ resource "boundary_role" "this" {
     "ids=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.project.scope_id
-  grant_scope_id = boundary_scope.project.id
+  grant_scope_ids = [boundary_scope.project.id]
 }
 
 resource "boundary_role" "use_targets" {
