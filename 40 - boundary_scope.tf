@@ -44,6 +44,7 @@ module "shared_access" {
   source = "./modules/project_bootstrap"
 
   scope_name = "shared_services"
+  create_host_catalog = true
   parent_scope_id = boundary_scope.tfo_apj_demo.id
   project_admin_principal_ids = [
       "mgoidc_9ujagjtUP1"

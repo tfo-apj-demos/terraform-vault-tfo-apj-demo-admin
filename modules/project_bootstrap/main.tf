@@ -63,3 +63,11 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
     permit-pty = ""
   }
 }
+
+resource "boundary_host_catalog" "this" {
+  count       = var.create_host_catalog ? 1 : 0
+  name        = "VMware ${var.scope_name} Hosts"
+  description = "GCVE VMware Hosts for ${var.scope_name}"
+  type        = "Static"
+  scope_id    = boundary_scope.project.id
+}
