@@ -33,5 +33,5 @@ resource "boundary_role" "u_anon" {
     "ids={{account.id}};actions=read,change-password"
   ]
   scope_id      = "global"
-  grant_scope_id = boundary_scope.tfo_apj_demo.id
+  grant_scope_ids = boundary_scope.tfo_apj_demo.id
 }
