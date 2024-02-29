@@ -22,7 +22,7 @@ resource "boundary_role" "use_targets" {
     "type=target;ids=*;actions=read,authorize-session"
   ]
   scope_id      = boundary_scope.project.scope_id
-  grant_scope_id = boundary_scope.project.id
+  grant_scope_ids = [boundary_scope.project.id]
 }
 
 resource "vault_token" "this" {
