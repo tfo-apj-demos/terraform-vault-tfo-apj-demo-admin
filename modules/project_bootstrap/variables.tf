@@ -18,3 +18,9 @@ variable "connect_only_principal_ids" {
   type = list(string)
   default = []
 }
+
+variable "create_host_catalog" {
+  description = "Whether to create the boundary host catalog or not"
+  type        = bool
+  default     = false
+}

@@ -10,7 +10,7 @@ resource "boundary_role" "this" {
     "ids=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.project.scope_id
-  grant_scope_id = boundary_scope.project.id
+  grant_scope_ids = [boundary_scope.project.id]
 }
 
 resource "boundary_role" "use_targets" {
@@ -22,7 +22,7 @@ resource "boundary_role" "use_targets" {
     "type=target;ids=*;actions=read,authorize-session"
   ]
   scope_id      = boundary_scope.project.scope_id
-  grant_scope_id = boundary_scope.project.id
+  grant_scope_ids = [boundary_scope.project.id]
 }
 
 resource "vault_token" "this" {
@@ -62,4 +62,11 @@ resource "boundary_credential_library_vault_ssh_certificate" "this" {
   extensions = {
     permit-pty = ""
   }
+}
+
+resource "boundary_host_catalog_static" "this" {
+  count       = var.create_host_catalog ? 1 : 0
+  name        = "VMware ${var.scope_name} Hosts"
+  description = "GCVE VMware Hosts for ${var.scope_name}"
+  scope_id    = boundary_scope.project.id
 }
