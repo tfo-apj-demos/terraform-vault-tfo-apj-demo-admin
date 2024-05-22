@@ -47,7 +47,8 @@ module "shared_access" {
   create_host_catalog = true
   parent_scope_id = boundary_scope.tfo_apj_demo.id
   project_admin_principal_ids = [
-      "mgoidc_9ujagjtUP1"
+      "mgoidc_9ujagjtUP1",
+      "u_QEEqVSuCe7"
   ]
   connect_only_principal_ids = [
     "mgoidc_fj1jMa5RWF"
