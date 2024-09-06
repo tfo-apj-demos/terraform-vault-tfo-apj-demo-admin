@@ -11,7 +11,7 @@ resource "vault_jwt_auth_backend_role" "boundary_admins" {
   ]
   bound_claims_type = "glob"
   bound_claims = {
-    sub = "organization:tfo-apj-demos:project:10 - gcve-foundations:workspace:boundary-admin:run_phase:*,organization:tfo-apj-demos:project:10 - gcve-foundations:workspace:vsphere-vault-deploy:run_phase:*"
+    sub = "organization:tfo-apj-demos:project:10 - gcve-foundations:workspace:*:run_phase:*"
     terraform_organization_id = "org-6nfrqkZhPPHJWG5h"
   }
   user_claim      = "terraform_full_workspace"
