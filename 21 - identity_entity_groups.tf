@@ -4,7 +4,8 @@ resource "vault_identity_group" "team_se" {
   type     = "internal"
   policies = [
     "default",
-    "auth_to_oidc"
+    "auth_to_oidc",
+    "sign_ssh_certificate"
   ]
   member_entity_ids = [ 
     for v in vault_identity_entity.se: v.id
