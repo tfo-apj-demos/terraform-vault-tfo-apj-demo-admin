@@ -26,6 +26,7 @@ resource "vault_ssh_secret_backend_role" "rhel" {
   name = "rhel"
   allow_user_certificates = true
   default_user = "vm_user"
+  allow_empty_principals = true
   allowed_users = "*"
   key_type = "ca"
   ttl = "28800"
