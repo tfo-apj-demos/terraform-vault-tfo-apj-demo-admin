@@ -31,3 +31,13 @@ variable "service_account_password" {
 variable "gcve_admin_github_alisases" {
   type = list(string)
 }
+
+variable "root_ca_cert" {
+  type      = string
+  sensitive = true
+}
+
+variable "root_ca_key" {
+  type      = string
+  sensitive = true
+}
