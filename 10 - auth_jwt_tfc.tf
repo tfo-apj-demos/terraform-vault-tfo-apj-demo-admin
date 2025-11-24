@@ -32,6 +32,7 @@ resource "vault_jwt_auth_backend_role" "tfc" {
     "generate_certificate",
     "create_child_token",
     "sign_ssh_certificate",
+    "manage_pki"
     ]
 
   bound_audiences = [
