@@ -2,7 +2,7 @@ terraform {
   required_providers {
     vault = {
       source = "hashicorp/vault"
-      version = "~> 4"
+      version = "~> "
     }
     github = {
       source = "integrations/github"
@@ -33,6 +33,7 @@ provider "boundary" {
 }
 
 provider "vault" {
+  skip_child_token = true
   namespace = "admin/tfo-apj-demos"
 }
 
