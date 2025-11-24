@@ -46,33 +46,56 @@ EOH
 
 # }
 
+# Generate intermediate CA certificate signing request
+resource "vault_pki_secret_backend_intermediate_cert_request" "this" {
+	backend      = vault_mount.pki.path
+	type         = "internal"
+	common_name  = "HCP Vault Intermediate"
+
+	# Key configuration
+	key_type     = "ec"
+	key_bits     = 384
+
+	# Subject information
+	organization = "WWTFO"
+	ou           = "TFO_APJ_DEMOS"
+	country      = "AU"
+	locality     = "Sydney"
+}
+
+# Sign the intermediate CSR with the root CA
+# NOTE: This assumes you have access to sign with the root CA
+# You may need to adjust this based on your root CA setup
+resource "vault_pki_secret_backend_root_sign_intermediate" "this" {
+	backend     = vault_mount.pki.path
+	csr         = vault_pki_secret_backend_intermediate_cert_request.this.csr
+	common_name = "HCP Vault Intermediate"
+
+	# TTL for intermediate CA - 2 years
+	ttl         = "17520h"  # 730 days / 2 years
+
+	# Use CSR values for subject information
+	use_csr_values = true
+
+	# Key usage for intermediate CA
+	# Allows this intermediate to sign certificates but not other intermediates
+	# max_path_length = 0 means this intermediate cannot sign other intermediates
+	max_path_length = 0
+}
+
+# Install the signed certificate back into the intermediate CA
 resource "vault_pki_secret_backend_intermediate_set_signed" "this" {
-	backend = vault_mount.pki.path
-	certificate =<<EOH
------BEGIN CERTIFICATE-----
-MIID6jCCA3GgAwIBAgITPAAAAAWTr6/h7njmHgAAAAAABTAKBggqhkjOPQQDBDBB
-MRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGTAXBgoJkiaJk/IsZAEZFgloYXNoaWNv
-cnAxDTALBgNVBAMTBHJvb3QwHhcNMjMxMTIzMDQyNjM2WhcNMjUxMTIzMDQzNjM2
-WjBnMQswCQYDVQQGEwJBVTEPMA0GA1UEBxMGU3lkbmV5MQ4wDAYDVQQKEwVXV1RG
-TzEWMBQGA1UECwwNVEZPX0FQSl9ERU1PUzEfMB0GA1UEAxMWSENQIFZhdWx0IElu
-dGVybWVkaWF0ZTB2MBAGByqGSM49AgEGBSuBBAAiA2IABPa+1KIuxoKEFxwnGPtq
-fjn5faWLJGoUY/N+r82olHMZRx9Cc2Ll+u5zBA30JIyDnJp5qVZpCjXS8CgjOchf
-cZG3YMsuVV9NvmtucuaFVyZ5e3/D2KBYhw+31ghiZa5lxqOCAgMwggH/MB0GA1Ud
-DgQWBBRJWsFZXYi1yOM62GixZaGENky05zAfBgNVHSMEGDAWgBSgNqfA0i1xcfIR
-mDPes6iZGbIXjjCBwwYDVR0fBIG7MIG4MIG1oIGyoIGvhoGsbGRhcDovLy9DTj1y
-b290LENOPWRjLTAsQ049Q0RQLENOPVB1YmxpYyUyMEtleSUyMFNlcnZpY2VzLENO
-PVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9aGFzaGljb3JwLERDPWxvY2Fs
-P2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/YmFzZT9vYmplY3RDbGFzcz1jUkxE
-aXN0cmlidXRpb25Qb2ludDCBugYIKwYBBQUHAQEEga0wgaowgacGCCsGAQUFBzAC
-hoGabGRhcDovLy9DTj1yb290LENOPUFJQSxDTj1QdWJsaWMlMjBLZXklMjBTZXJ2
-aWNlcyxDTj1TZXJ2aWNlcyxDTj1Db25maWd1cmF0aW9uLERDPWhhc2hpY29ycCxE
-Qz1sb2NhbD9jQUNlcnRpZmljYXRlP2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNh
-dGlvbkF1dGhvcml0eTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTAPBgNVHRMB
-Af8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAKBggqhkjOPQQDBANnADBkAjAcO6Gp
-PJXpOE6deiEK0g54QxGAEBm6g9L6tAXD6B64L89Ltw7be6buB7o/NPnroxwCMEok
-Nz8cPTDNXzSWTBgmC37224PMvhLr50LVrlHdS+7RuRaQ63vYVnadJ6oMn85Thw==
------END CERTIFICATE-----
-EOH
+	backend     = vault_mount.pki.path
+	certificate = vault_pki_secret_backend_root_sign_intermediate.this.certificate
+}
+
+# Configure CA URLs for certificate distribution
+resource "vault_pki_secret_backend_config_urls" "config_urls" {
+	backend                 = vault_mount.pki.path
+	issuing_certificates    = ["https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/admin/tfo-apj-demos/pki/ca"]
+	crl_distribution_points = ["https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/admin/tfo-apj-demos/pki/crl"]
+
+	depends_on = [vault_pki_secret_backend_intermediate_set_signed.this]
 }
 
 import {
@@ -81,10 +104,15 @@ import {
 }
 
 resource "vault_pki_secret_backend_role" "gcve" {
-	name = "gcve"
+	name    = "gcve"
 	backend = vault_mount.pki.path
-	max_ttl = "259200"
-	ttl = "259200"
+
+	# TTL Configuration - 30 days for server certificates
+	# This is well within the intermediate CA's 2-year validity
+	ttl     = "720h"   # 30 days
+	max_ttl = "720h"   # 30 days maximum
+
+	# Domain and naming constraints
 	allowed_domains = [
 		"hashicorp.local"
 	]
@@ -92,7 +120,21 @@ resource "vault_pki_secret_backend_role" "gcve" {
 		"*.hashicorp.local",
 		"vault.hashicorp.local"
 	]
-	allow_ip_sans = true
-	allow_subdomains = true
-	enforce_hostnames = false
+	allow_ip_sans       = true
+	allow_subdomains    = true
+	enforce_hostnames   = false
+
+	# Key configuration
+	key_type = "ec"
+	key_bits = 256
+
+	# Key usage for server/client certificates
+	key_usage = ["digital_signature", "key_encipherment"]
+	ext_key_usage = ["server_auth", "client_auth"]
+
+	# Certificate flags
+	server_flag = true
+	client_flag = true
+
+	depends_on = [vault_pki_secret_backend_intermediate_set_signed.this]
 }
