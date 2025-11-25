@@ -45,3 +45,12 @@ module "pki_central_signing" {
   
   depends_on = [module.pki_root]
 }
+
+# 3. Issuing CA (End-entity certificate issuer)
+module "pki_issuing" {
+  source = "./modules/pki/issuing"
+  
+  central_signing_backend_path = module.pki_central_signing.backend_path
+  
+  depends_on = [module.pki_central_signing]
+}
