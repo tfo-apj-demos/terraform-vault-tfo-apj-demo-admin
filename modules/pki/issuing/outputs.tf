@@ -29,16 +29,16 @@ output "issuing_endpoints" {
   description = "Certificate issuing endpoints for each certificate class"
   value = {
     for class_name, config in local.certificate_classes : class_name => 
-      "https://vault.hashibank.com/v1/${var.namespace}/issuing-ca/issue/${class_name}-certs"
+      "https://vault.hashibank.com/v1/issuing-ca/issue/${class_name}-certs"
   }
 }
 
 output "issuing_url" {
   description = "The URL for reading the issuing CA certificate"
-  value       = "https://vault.hashibank.com/v1/${var.namespace}/issuing-ca/ca"
+  value       = "https://vault.hashibank.com/v1/issuing-ca/ca"
 }
 
 output "crl_url" {
   description = "The URL for the certificate revocation list"
-  value       = "https://vault.hashibank.com/v1/${var.namespace}/issuing-ca/crl"
+  value       = "https://vault.hashibank.com/v1/issuing-ca/crl"
 }
