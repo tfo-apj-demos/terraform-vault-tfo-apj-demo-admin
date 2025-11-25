@@ -18,7 +18,8 @@ resource "vault_identity_group" "gcve_admins" {
   policies = [
     "admin",
     "generate_certificate",
-    "sign_ssh_certificate"
+    "sign_ssh_certificate",
+    "manage_pki"
   ]
   member_entity_ids = [ 
     for v in var.gcve_admin_github_alisases: vault_identity_entity.se[v].id
