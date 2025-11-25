@@ -27,10 +27,21 @@ SRhpTJqh1IW9s+jARBtT1+SJiO3ZXTs7INMm
 EOH
 }
 
+# 1. Root CA (External/Offline Root CA in the tfo-apj-demos namespace)
 module "pki_root" {
   source = "./modules/pki/root"
   
   root_ca_cert         = var.root_ca_cert
   root_ca_key          = var.root_ca_key
   organization_domains = ["hashicorp.local"]
+}
+
+# 2. Central Signing CA (Intermediate CA in tfo-apj-demos namespace)
+module "pki_central_signing" {
+  source = "./modules/pki/central-signing"
+  
+  root_ca_backend_path   = module.pki_root.backend_path
+  organization_domains   = ["hashicorp.local"]
+  
+  depends_on = [module.pki_root]
 }
