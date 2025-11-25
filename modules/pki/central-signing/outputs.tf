@@ -20,10 +20,10 @@ output "signing_role_name" {
 
 output "issuing_url" {
   description = "The URL for issuing certificates from this CA"
-  value       = "https://vault.hashibank.com/v1/${var.namespace}/${vault_mount.central_signing_ca.path}/ca"
+  value       = "https://vault.hashibank.com/v1/${vault_mount.central_signing_ca.path}/ca"
 }
 
 output "crl_url" {
   description = "The URL for the certificate revocation list"
-  value       = "https://vault.hashibank.com/v1/${var.namespace}/${vault_mount.central_signing_ca.path}/crl"
+  value       = "https://vault.hashibank.com/v1/${vault_mount.central_signing_ca.path}/crl"
 }
