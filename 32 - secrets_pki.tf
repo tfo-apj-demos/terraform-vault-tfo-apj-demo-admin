@@ -27,11 +27,10 @@ SRhpTJqh1IW9s+jARBtT1+SJiO3ZXTs7INMm
 EOH
 }
 
-
-# module "pki_root" {
-#   source = "./modules/pki/root"
+module "pki_root" {
+  source = "./modules/pki/root"
   
-#   root_ca_cert         = var.root_ca_cert
-#   root_ca_key          = var.root_ca_key
-#   organization_domains = ["hashicorp.local"]
-# }
+  root_ca_cert         = var.root_ca_cert
+  root_ca_key          = var.root_ca_key
+  organization_domains = ["hashicorp.local"]
+}
