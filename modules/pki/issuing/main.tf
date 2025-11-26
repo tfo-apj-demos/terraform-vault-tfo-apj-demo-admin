@@ -112,10 +112,10 @@ resource "vault_pki_secret_backend_role" "certificate_roles" {
   # Domain and naming constraints
   allow_any_name      = false
   allow_subdomains    = true
-  allowed_domains     = ["*.hashicorp.local"]
-  allow_bare_domains  = false
+  allowed_domains     = ["hashicorp.local"]
+  allow_bare_domains  = true
   allow_localhost     = true
-  allow_ip_sans       = false
+  allow_ip_sans       = true
   
   # Key configuration
   key_type            = "ec"
