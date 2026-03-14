@@ -81,8 +81,8 @@ resource "vault_pki_secret_backend_role" "issuing_ca_signing" {
   name        = "issuing-ca-signing"
   
   # Certificate parameters
-  ttl         = "8760h"    # 1 year for issuing CAs
-  max_ttl     = "8760h"    # 1 year maximum
+  ttl         = "17520h"   # 2 years for issuing CAs
+  max_ttl     = "17520h"   # 2 years maximum
   
   # Key usage and constraints
   allow_any_name      = false
