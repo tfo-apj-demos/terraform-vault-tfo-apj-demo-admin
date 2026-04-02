@@ -5,66 +5,66 @@ locals {
   # Issuing CA configuration
   ca_config = {
     common_name = "GCVE Issuing CA"
-    ttl         = "8760h"  # 1 year
+    ttl         = "8760h" # 1 year
     key_type    = "ec"
-    key_bits    = 256      # P-256 curve for issuing CAs
+    key_bits    = 256 # P-256 curve for issuing CAs
   }
-  
+
   # Certificate class configurations with different TTLs
   certificate_classes = {
     server = {
-      ttl     = "720h"   # 30 days
-      max_ttl = "720h"   # 30 days maximum
-      key_usage = ["digital_signature", "key_encipherment"]
+      ttl           = "720h" # 30 days
+      max_ttl       = "720h" # 30 days maximum
+      key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["server_auth"]
-      server_flag = true
-      client_flag = false
+      server_flag   = true
+      client_flag   = false
     }
     client = {
-      ttl     = "168h"   # 7 days
-      max_ttl = "168h"   # 7 days maximum
-      key_usage = ["digital_signature", "key_encipherment"]
+      ttl           = "168h" # 7 days
+      max_ttl       = "168h" # 7 days maximum
+      key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["client_auth"]
-      server_flag = false
-      client_flag = true
+      server_flag   = false
+      client_flag   = true
     }
     application = {
-      ttl     = "48h"    # 2 days
-      max_ttl = "48h"    # 2 days maximum
-      key_usage = ["digital_signature", "key_encipherment"]
+      ttl           = "48h" # 2 days
+      max_ttl       = "48h" # 2 days maximum
+      key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["server_auth", "client_auth"]
-      server_flag = true
-      client_flag = true
+      server_flag   = true
+      client_flag   = true
     }
   }
 }
 
 # PKI Secret Engine for Issuing CA
 resource "vault_mount" "issuing_ca" {
-  path                          = "issuing-ca"
-  type                          = "pki"
-  description                   = "Issuing CA - Issues end-entity certificates"
-  default_lease_ttl_seconds     = 172800    # 48 hours
-  max_lease_ttl_seconds         = 2592000   # 30 days
+  path                      = "issuing-ca"
+  type                      = "pki"
+  description               = "Issuing CA - Issues end-entity certificates"
+  default_lease_ttl_seconds = 172800  # 48 hours
+  max_lease_ttl_seconds     = 2592000 # 30 days
 }
 
 # Generate intermediate CA certificate signing request
 resource "vault_pki_secret_backend_intermediate_cert_request" "issuing_csr" {
-  backend      = vault_mount.issuing_ca.path
-  type         = "internal"
-  common_name  = local.ca_config.common_name
-  
+  backend     = vault_mount.issuing_ca.path
+  type        = "internal"
+  common_name = local.ca_config.common_name
+
   # Key configuration
-  key_type     = local.ca_config.key_type
-  key_bits     = local.ca_config.key_bits
-  
+  key_type = local.ca_config.key_type
+  key_bits = local.ca_config.key_bits
+
   # Subject information
   country      = "AU"
   province     = "New South Wales"
   locality     = "Sydney"
   organization = "GCVE"
   ou           = "SEA Division"
-  
+
   # Alternative names
   alt_names = [
     "issuing-ca.hashicorp.local",
@@ -77,7 +77,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "issuing_signed" {
   backend     = var.central_signing_backend_path
   csr         = vault_pki_secret_backend_intermediate_cert_request.issuing_csr.csr
   common_name = local.ca_config.common_name
-  
+
   # Use the central signing CA's role for issuing CAs
   use_csr_values = true
   ttl            = local.ca_config.ttl
@@ -89,53 +89,83 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "issuing" {
   certificate = vault_pki_secret_backend_root_sign_intermediate.issuing_signed.certificate
 }
 
+# Name the issuer so Certificates Inventory can resolve issuer metadata
+resource "vault_pki_secret_backend_issuer" "issuing_ca" {
+  backend     = vault_mount.issuing_ca.path
+  issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.issuing.imported_issuers[0]
+  issuer_name = "gcve-issuing-ca"
+}
+
+# Set the named issuer as default for this mount
+resource "vault_pki_secret_backend_config_issuers" "issuing_ca" {
+  backend                       = vault_mount.issuing_ca.path
+  default                       = vault_pki_secret_backend_issuer.issuing_ca.issuer_id
+  default_follows_latest_issuer = false
+}
+
 # Configure CA URLs for the issuing CA
 resource "vault_pki_secret_backend_config_urls" "issuing_urls" {
   backend                 = vault_mount.issuing_ca.path
   issuing_certificates    = ["https://vault.hashicorp.local/v1/issuing-ca/ca"]
   crl_distribution_points = ["https://vault.hashicorp.local/v1/issuing-ca/crl"]
-  
+
   depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
 }
 
 # Create certificate roles for different certificate classes
 resource "vault_pki_secret_backend_role" "certificate_roles" {
   for_each = local.certificate_classes
-  
-  backend     = vault_mount.issuing_ca.path
-  name        = "${each.key}-certs"
-  
+
+  backend    = vault_mount.issuing_ca.path
+  name       = "${each.key}-certs"
+  issuer_ref = vault_pki_secret_backend_issuer.issuing_ca.issuer_ref
+
   # Certificate parameters from class configuration
-  ttl         = each.value.ttl
-  max_ttl     = each.value.max_ttl
-  
+  ttl     = each.value.ttl
+  max_ttl = each.value.max_ttl
+
   # Domain and naming constraints
-  allow_any_name      = false
-  allow_subdomains    = true
-  allowed_domains     = ["hashicorp.local"]
-  allow_bare_domains  = true
-  allow_localhost     = true
-  allow_ip_sans       = true
-  
+  allow_any_name     = false
+  allow_subdomains   = true
+  allowed_domains    = ["hashicorp.local"]
+  allow_bare_domains = true
+  allow_localhost    = true
+  allow_ip_sans      = true
+
   # Key configuration
-  key_type            = "ec"
-  key_bits            = 256
-  key_usage           = each.value.key_usage
-  ext_key_usage       = each.value.ext_key_usage
-  
+  key_type      = "ec"
+  key_bits      = 256
+  key_usage     = each.value.key_usage
+  ext_key_usage = each.value.ext_key_usage
+
   # Certificate flags
   server_flag           = each.value.server_flag
   client_flag           = each.value.client_flag
   code_signing_flag     = false
   email_protection_flag = false
-  
+
+  depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
+}
+
+# Enable auto-tidy to keep certificate inventory clean
+resource "vault_generic_endpoint" "auto_tidy" {
+  path = "${vault_mount.issuing_ca.path}/config/auto-tidy"
+
+  data_json = jsonencode({
+    enabled            = true
+    interval_duration  = "24h"
+    tidy_cert_store    = true
+    tidy_revoked_certs = true
+    safety_buffer      = "72h"
+  })
+
   depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
 }
 
 # Policy for certificate issuance in this namespace
 resource "vault_policy" "issuing_ca_policy" {
-  name      = "issuing-ca-access"
-  
+  name = "issuing-ca-access"
+
   policy = <<EOT
 # Allow reading CA certificate and CRL
 path "${vault_mount.issuing_ca.path}/ca" {
@@ -147,7 +177,7 @@ path "${vault_mount.issuing_ca.path}/crl" {
 }
 
 # Allow issuing certificates for all classes
-%{ for class_name, config in local.certificate_classes ~}
+%{for class_name, config in local.certificate_classes~}
 path "${vault_mount.issuing_ca.path}/issue/${class_name}-certs" {
   capabilities = ["create", "update"]
 }
@@ -155,7 +185,7 @@ path "${vault_mount.issuing_ca.path}/issue/${class_name}-certs" {
 path "${vault_mount.issuing_ca.path}/roles/${class_name}-certs" {
   capabilities = ["read"]
 }
-%{ endfor ~}
+%{endfor~}
 EOT
 
   depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
