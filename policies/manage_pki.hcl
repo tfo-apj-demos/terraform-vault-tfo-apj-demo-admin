@@ -211,7 +211,22 @@ path "issuing-ca/root/sign-intermediate" {
 }
 
 path "issuing-ca/issuers/*" {
-    capabilities = ["read", "list"]
+    capabilities = ["create", "read", "update", "list"]
+}
+
+# Individual issuer management (naming, defaults)
+path "issuing-ca/issuer/*" {
+    capabilities = ["create", "read", "update"]
+}
+
+# Issuer configuration (default issuer)
+path "issuing-ca/config/issuers" {
+    capabilities = ["create", "read", "update"]
+}
+
+# Auto-tidy configuration
+path "issuing-ca/config/auto-tidy" {
+    capabilities = ["create", "read", "update"]
 }
 
 path "issuing-ca/config/urls" {
