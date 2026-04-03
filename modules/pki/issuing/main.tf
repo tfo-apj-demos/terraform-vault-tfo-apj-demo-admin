@@ -36,6 +36,14 @@ locals {
       server_flag   = true
       client_flag   = true
     }
+    demo = {
+      ttl           = "5m"  # 5 minutes — for live demo expired cert setup
+      max_ttl       = "10m" # 10 minutes maximum
+      key_usage     = ["digital_signature", "key_encipherment"]
+      ext_key_usage = ["server_auth"]
+      server_flag   = true
+      client_flag   = false
+    }
   }
 }
 

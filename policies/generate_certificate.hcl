@@ -6,6 +6,10 @@ path "issuing-ca/issue/server-certs" {
   capabilities = ["create", "read", "update"]
 }
 
+path "issuing-ca/issue/demo-certs" {
+  capabilities = ["create", "read", "update"]
+}
+
 path "issuing-ca/revoke" {
   capabilities = ["create", "update"]
 }
