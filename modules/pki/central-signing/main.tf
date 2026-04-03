@@ -4,7 +4,7 @@
 locals {
   # Central signing CA configuration
   ca_config = {
-    common_name = "hashicorp.local Central Signing CA"
+    common_name = "HCP Vault Central Signing CA"
     ttl         = "43800h"  # 5 years
     key_type    = "ec"
     key_bits    = 384       # P-384 curve for central signing CA (stronger than issuing CAs)

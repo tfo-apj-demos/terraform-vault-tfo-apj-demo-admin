@@ -4,7 +4,7 @@
 locals {
   # Issuing CA configuration
   ca_config = {
-    common_name = "GCVE Issuing CA"
+    common_name = "HCP Vault Issuing CA"
     ttl         = "8760h" # 1 year
     key_type    = "ec"
     key_bits    = 256 # P-256 curve for issuing CAs
@@ -101,7 +101,7 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "issuing" {
 resource "vault_pki_secret_backend_issuer" "issuing_ca" {
   backend     = vault_mount.issuing_ca.path
   issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.issuing.imported_issuers[0]
-  issuer_name = "gcve-issuing-ca"
+  issuer_name = "hcp-vault-issuing-ca"
 }
 
 # Set the named issuer as default for this mount
