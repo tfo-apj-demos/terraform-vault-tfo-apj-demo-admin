@@ -37,21 +37,20 @@ module "pki_root" {
 }
 
 # 2. Central Signing CA (Intermediate CA in tfo-apj-demos namespace)
-# TEMPORARILY COMMENTED OUT — destroy and recreate to pick up new CNs
-# module "pki_central_signing" {
-#   source = "./modules/pki/central-signing"
-#
-#   root_ca_backend_path   = module.pki_root.backend_path
-#   organization_domains   = ["hashicorp.local"]
-#
-#   depends_on = [module.pki_root]
-# }
+module "pki_central_signing" {
+  source = "./modules/pki/central-signing"
+
+  root_ca_backend_path   = module.pki_root.backend_path
+  organization_domains   = ["hashicorp.local"]
+
+  depends_on = [module.pki_root]
+}
 
 # 3. Issuing CA (End-entity certificate issuer)
-# module "pki_issuing" {
-#   source = "./modules/pki/issuing"
-#
-#   central_signing_backend_path = module.pki_central_signing.backend_path
-#
-#   depends_on = [module.pki_central_signing]
-# }
+module "pki_issuing" {
+  source = "./modules/pki/issuing"
+
+  central_signing_backend_path = module.pki_central_signing.backend_path
+
+  depends_on = [module.pki_central_signing]
+}
