@@ -126,7 +126,7 @@ resource "vault_pki_secret_backend_role" "certificate_roles" {
 
   backend    = vault_mount.issuing_ca.path
   name       = "${each.key}-certs"
-  issuer_ref = vault_pki_secret_backend_issuer.issuing_ca.issuer_ref
+  issuer_ref = vault_pki_secret_backend_issuer.issuing_ca.issuer_name
 
   # Certificate parameters from class configuration
   ttl     = each.value.ttl
