@@ -216,12 +216,12 @@ path "issuing-ca/issuers/*" {
 
 # Individual issuer management (naming, defaults)
 path "issuing-ca/issuer/*" {
-    capabilities = ["create", "read", "update"]
+    capabilities = ["create", "read", "update", "patch"]
 }
 
 # Issuer configuration (default issuer)
 path "issuing-ca/config/issuers" {
-    capabilities = ["create", "read", "update"]
+    capabilities = ["create", "read", "update", "patch"]
 }
 
 # Auto-tidy configuration
