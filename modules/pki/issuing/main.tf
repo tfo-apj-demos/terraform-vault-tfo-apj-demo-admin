@@ -157,7 +157,9 @@ resource "vault_pki_secret_backend_role" "certificate_roles" {
 
 # Enable auto-tidy to keep certificate inventory clean
 resource "vault_generic_endpoint" "auto_tidy" {
-  path = "${vault_mount.issuing_ca.path}/config/auto-tidy"
+  path                 = "${vault_mount.issuing_ca.path}/config/auto-tidy"
+  disable_delete       = true
+  ignore_absent_fields = true
 
   data_json = jsonencode({
     enabled            = true
