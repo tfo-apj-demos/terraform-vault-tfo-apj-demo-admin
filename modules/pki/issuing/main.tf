@@ -166,7 +166,7 @@ resource "vault_generic_endpoint" "auto_tidy" {
     interval_duration  = "24h"
     tidy_cert_store    = true
     tidy_revoked_certs = true
-    safety_buffer      = "72h"
+    safety_buffer      = "24h"
   })
 
   depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
