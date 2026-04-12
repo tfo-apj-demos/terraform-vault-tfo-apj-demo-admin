@@ -37,6 +37,19 @@ resource "vault_identity_oidc_client" "boundary" {
   key = vault_identity_oidc_key.team_se.id
 }
 
+resource "vault_identity_oidc_client" "openshift" {
+  name          = "openshift"
+  redirect_uris = [
+    "https://oauth-openshift.apps.openshift-01.hashicorp.local/oauth2callback/hcp-vault",
+  ]
+  assignments = [
+    vault_identity_oidc_assignment.team_se.name
+  ]
+  id_token_ttl     = 2400
+  access_token_ttl = 7200
+  key = vault_identity_oidc_key.team_se.id
+}
+
 resource "vault_identity_oidc_scope" "team_se" {
   name        = "groups"
   template    = "{\"groups\" :{{identity.entity.groups.names}} }"
@@ -56,7 +69,8 @@ resource "vault_identity_oidc_provider" "team_se" {
     vault_identity_oidc_scope.team_se.name
   ]
   allowed_client_ids = [
-    vault_identity_oidc_client.boundary.client_id
+    vault_identity_oidc_client.boundary.client_id,
+    vault_identity_oidc_client.openshift.client_id,
   ]
 }
 
@@ -69,4 +83,9 @@ resource "vault_identity_oidc_role" "team_se" {
 resource "vault_identity_oidc_key_allowed_client_id" "team_se" {
   key_name          = vault_identity_oidc_key.team_se.name
   allowed_client_id = vault_identity_oidc_client.boundary.client_id
+}
+
+resource "vault_identity_oidc_key_allowed_client_id" "openshift" {
+  key_name          = vault_identity_oidc_key.team_se.name
+  allowed_client_id = vault_identity_oidc_client.openshift.client_id
 }
