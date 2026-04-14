@@ -19,3 +19,14 @@ output "openshift_oidc_client_secret" {
   value       = vault_identity_oidc_client.openshift.client_secret
   sensitive   = true
 }
+
+output "aap_oidc_client_id" {
+  description = "OIDC Client ID for AAP Gateway"
+  value       = vault_identity_oidc_client.aap.client_id
+}
+
+output "aap_oidc_client_secret" {
+  description = "OIDC Client Secret for AAP Gateway"
+  value       = vault_identity_oidc_client.aap.client_secret
+  sensitive   = true
+}
