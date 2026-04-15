@@ -29,8 +29,8 @@ resource "vault_pki_secret_backend_role" "intermediate_ca_signing" {
   name                = "intermediate-ca-signing"
   
   # Certificate parameters
-  ttl                 = "43800h"    # 5 years for intermediate CAs
-  max_ttl             = "43800h"    # 5 years maximum
+  ttl                 = "157680000"  # 5 years for intermediate CAs (in seconds)
+  max_ttl             = "157680000"  # 5 years maximum (in seconds)
   
   # Key usage and constraints
   allow_any_name      = false

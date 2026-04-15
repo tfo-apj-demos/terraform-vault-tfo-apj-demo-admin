@@ -7,7 +7,7 @@ resource "boundary_role" "team_se" {
     "ids=*;type=*;actions=*"
   ]
   scope_id      = boundary_scope.tfo_apj_demo.id
-  grant_scope_ids = [boundary_scope.tfo_apj_demo.id]
+  grant_scope_ids = ["this"]
 }
 
 resource "boundary_role" "this" {

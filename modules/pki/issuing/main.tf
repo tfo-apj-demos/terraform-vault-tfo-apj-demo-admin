@@ -13,32 +13,32 @@ locals {
   # Certificate class configurations with different TTLs
   certificate_classes = {
     server = {
-      ttl           = "720h" # 30 days
-      max_ttl       = "720h" # 30 days maximum
+      ttl           = "2592000" # 30 days (in seconds)
+      max_ttl       = "2592000" # 30 days maximum (in seconds)
       key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["server_auth"]
       server_flag   = true
       client_flag   = false
     }
     client = {
-      ttl           = "168h" # 7 days
-      max_ttl       = "168h" # 7 days maximum
+      ttl           = "604800" # 7 days (in seconds)
+      max_ttl       = "604800" # 7 days maximum (in seconds)
       key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["client_auth"]
       server_flag   = false
       client_flag   = true
     }
     application = {
-      ttl           = "48h" # 2 days
-      max_ttl       = "48h" # 2 days maximum
+      ttl           = "172800" # 2 days (in seconds)
+      max_ttl       = "172800" # 2 days maximum (in seconds)
       key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["server_auth", "client_auth"]
       server_flag   = true
       client_flag   = true
     }
     demo = {
-      ttl           = "5m"  # 5 minutes — for live demo expired cert setup
-      max_ttl       = "10m" # 10 minutes maximum
+      ttl           = "300"  # 5 minutes (in seconds)
+      max_ttl       = "600"  # 10 minutes maximum (in seconds)
       key_usage     = ["digital_signature", "key_encipherment"]
       ext_key_usage = ["server_auth"]
       server_flag   = true
@@ -163,10 +163,10 @@ resource "vault_generic_endpoint" "auto_tidy" {
 
   data_json = jsonencode({
     enabled            = true
-    interval_duration  = "24h"
+    interval_duration  = 86400
     tidy_cert_store    = true
     tidy_revoked_certs = true
-    safety_buffer      = "24h"
+    safety_buffer      = 86400
   })
 
   depends_on = [vault_pki_secret_backend_intermediate_set_signed.issuing]
