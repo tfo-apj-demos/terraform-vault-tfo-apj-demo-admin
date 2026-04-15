@@ -53,7 +53,7 @@ resource "vault_identity_oidc_client" "openshift" {
 resource "vault_identity_oidc_client" "aap" {
   name          = "aap"
   redirect_uris = [
-    "https://aap-aap.apps.openshift-01.hashicorp.local/api/gateway/callback/oidc/",
+    "https://aap-aap.apps.openshift-01.hashicorp.local/api/gateway/social/complete/983d9384-96b8-421a-8554-24e7faef1033/",
   ]
   assignments = [
     vault_identity_oidc_assignment.team_se.name
